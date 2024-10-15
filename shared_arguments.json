@@ -1,0 +1,139 @@
+{
+    "keywords": {
+        "type": "object",
+        "description": "search keywords",
+        "properties": {
+            "productName": {
+                "default": "null",
+                "description": "name of mobile plan",
+                "title": "Productname",
+                "type": "string"
+            },
+            "includedVoiceCall": {
+                "default": "null",
+                "description": "The amount of voice calls provided by the plan",
+                "title": "Includedvoicecall",
+                "type": "string"
+            },
+            "includedVideoOrValueAddedCall": {
+                "default": "null",
+                "description": "The amount of video calls(\uc601\uc0c1\ud1b5\ud654) or added calls(\ubd80\uac00\ud1b5\ud654) provided by the plan",
+                "title": "Includedvideoorvalueaddedcall",
+                "type": "string"
+            },
+            "includedVoiceCallTospecifiedNumbers": {
+                "default": "null",
+                "description": "The amount of voice calls to specified numbers (\uc9c0\uc815\ud1b5\ud654) provided by the plan",
+                "title": "Includedvoicecalltospecifiednumbers",
+                "type": "string"
+            },
+            "includedData": {
+                "default": "null",
+                "description": "The amount of data. Generally GB units are used.",
+                "title": "Includeddata",
+                "type": "string"
+            },
+            "includedDataForSharingAndTethering": {
+                "default": "null",
+                "description": "The amount of sharing and tethering data.",
+                "title": "Includeddataforsharingandtethering",
+                "type": "string"
+            },
+            "optionData": {
+                "default": "null",
+                "description": "data provided in addition to the basic data provided",
+                "title": "Optiondata",
+                "type": "string"
+            },
+            "availableAmountForDataOptionRefill": {
+                "default": "null",
+                "description": "amount of data refill",
+                "title": "Availableamountfordataoptionrefill",
+                "type": "string"
+            },
+            "maximumAmountForSharing": {
+                "default": "null",
+                "description": "The maximum amount of data that can be shared with others",
+                "title": "Maximumamountforsharing",
+                "type": "string"
+            },
+            "includedText": {
+                "default": "null",
+                "description": "amount of SMS",
+                "title": "Includedtext",
+                "type": "string"
+            },
+            "monthlyPrice": {
+                "default": "null",
+                "description": "amount of monthly price. KRW(\uc6d0) units are used.",
+                "title": "Monthlyprice",
+                "type": "string"
+            },
+            "generation": {
+                "default": "null",
+                "description": "Available mobile networks (5G, LTE, etc.)",
+                "title": "Generation",
+                "type": "string"
+            },
+            "dataQoS": {
+                "default": "null",
+                "description": "Speed control when you can continue to use data without additional charges after your default data limit has been used up",
+                "title": "Dataqos",
+                "type": "string"
+            },
+            "benefit": {
+                "default": "null",
+                "description": "benefits of the mobile plan",
+                "title": "Benefit",
+                "type": "string"
+            },
+            "lineup": {
+                "default": "null",
+                "description": "The name of the parent group to which the mobile plan belongs",
+                "title": "Lineup",
+                "type": "string"
+            },
+            "onboardingChannel": {
+                "default": "null",
+                "description": "Channel to subscribe to the product",
+                "title": "Onboardingchannel",
+                "type": "string"
+            },
+            "onboardingTypeEligibility": {
+                "default": "null",
+                "description": "Available subscription types",
+                "title": "Onboardingtypeeligibility",
+                "type": "string"
+            },
+            "onboardingDevice": {
+                "default": "null",
+                "description": "device for subscribing to the product",
+                "title": "Onboardingdevice",
+                "type": "string"
+            },
+            "onboardingDeviceAlias": {
+                "default": "null",
+                "description": "alias of device for subscribing to the product",
+                "title": "Onboardingdevicealias",
+                "type": "string"
+            },
+            "specialCustomerOnboard": {
+                "default": "null",
+                "description": "Customer type segment (military, college student, etc.)",
+                "title": "Specialcustomeronboard",
+                "type": "string"
+            }
+        }
+    },
+    "plan": {
+        "description": "SKTelecom mobile plan you want to change.",
+        "type": "string"
+    },
+    "plans": {
+        "description": "List of SKTelecom mobile plans.",
+        "type": "array",
+        "items": {
+            "type": "string"
+        }
+    }
+}

@@ -1,0 +1,310 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "my_mobile_plan",
+            "description": "Useful when get my mobile plan.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "my_subscribed_add_ons",
+            "description": "Useful for providing your subscribed add-ons(\uac00\uc785 \ub41c \ubd80\uac00\uc11c\ube44\uc2a4).",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "my_billing_charge",
+            "description": "Useful when you need to provide recent billing charges (for last month's usage).",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "my_realtime_billing_charge",
+            "description": "Useful when you need to provide real-time billing charges based on current month usage.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "my_realtime_data_usage",
+            "description": "Useful when guide real-time data usage/residuals.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "my_shared_data_usage",
+            "description": "Useful when you need to provide shared and tethered data usage or residuals.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "my_average_data_usage",
+            "description": "Useful for providing average data usage from last 3 months data usage.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "remaining_data_refill_coupons",
+            "description": "Useful for guiding about remaining data refill coupons.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "remaining_data_gift",
+            "description": "Useful for guiding whether data can be gifted and how many times it remains available.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "t_family_data_usage",
+            "description": "Useful for guiding status of 'T\uac00\uc871\ubaa8\uc544\ub370\uc774\ud130' data usage.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "t_family_data_change_shared_amount",
+            "description": "Useful for changing to 'T\uac00\uc871\ubaa8\uc544\ub370\uc774\ud130' shared data amount.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "remaining_no_contract_plan_points",
+            "description": "Useful for checking points remaining on no-contract plans(\ubb34\uc57d\uc815\ud50c\ub79c).",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "billing_charge_analyze_summary",
+            "description": "Useful for providing how user's billing history compares to the previous month.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "billing_charge_analyze_discount",
+            "description": "Useful for providing details of the discount on billing charges and the increase/decrease compared to last month.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "billing_charge_data_usage",
+            "description": "Useful for providing data usage for this month and compare to last month.",
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "COMPARE_BETWEEN_MOBILE_PLAN",
+            "description": "Useful when compare features of multiple SKTelecom mobile plans.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "plans": {
+                        "description": "List of SKTelecom mobile plans.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "plans"
+                ]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "COMPARE_CHANGE_MY_MOBILE_PLAN",
+            "description": "Useful when compare when changing your plan.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "plan": {
+                        "description": "SKTelecom mobile plan you want to change.",
+                        "type": "object"
+                    }
+                },
+                "optional":[
+                    "keywords"
+                ]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "SEARCH_MOBILE_PLAN",
+            "description": "This function searches or offer mobile plans based on a specific keyword.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "keywords": {
+                        "type": "object",
+                        "description": "search keywords",
+                        "properties": {}
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+          "name": "changable_date_for_plan",
+          "description": "Useful for checking how long user have to stay on user's current plan and when user can change it.",
+          "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+          "name": "plan_auto_change_date",
+          "description": "This function is used to inform about when user's plan is automatically changed and what plan it's being changed to.",
+          "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+          "name": "plan_auto_change_date_alarm",
+          "description": "Useful for signing up for an alert when a user can change user's plan.",
+          "parameters": {
+              "type": "object",
+              "properties": {} 
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+          "name": "recommend_plans",
+          "description": "Useful for recommending plans to users.",
+          "parameters": {
+              "type": "object",
+              "properties": {
+                  "keywords": {
+                      "type": "object",
+                      "description": "search keywords",
+                      "properties": {}
+                  }
+              }
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+          "name": "estimated_billing_charge_compare_to_current",
+          "description": "Useful for providing an estimated bill when changing plan or signing up for a subscription.",
+          "parameters": {
+              "type": "object",
+              "properties": {
+                  "keywords": {
+                      "type": "object",
+                      "description": "search keywords",
+                      "properties": {}
+                  }
+              }
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+          "name": "check_plan_availability",
+          "description": "This function is used to check whether user can subscribe to the given plan.",
+          "parameters": {
+              "type": "object",
+              "properties": {
+                  "keywords": {
+                      "type": "object",
+                      "description": "search keywords",
+                      "properties": {}
+                  }
+              }
+            }
+        }
+    }
+
+]

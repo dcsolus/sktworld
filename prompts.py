@@ -120,11 +120,9 @@ def get_system_prompt(plan_list=None, lineup_list=None, args_desc=None, function
     # generate system prompt
     system_prompt = f"{context}"
 
-    if kwargs.get('plan_list') is True and plan_list is not None:
-        system_prompt += f"\n\n### SKTelecom mobile plans\n{plan_list}"
+    system_prompt += f"\n\n### SKTelecom mobile plans\n{plan_list}" if plan_list is not None else ''
 
-    if kwargs.get('lineup_list') is True and lineup_list is not None:
-        system_prompt += f"\n\n### SKTelecom mobile plan lineups\n{lineup_list}"
+    system_prompt += f"\n\n### SKTelecom mobile plan lineups\n{lineup_list}" if lineup_list is not None else ''
 
     system_prompt += f"\n\n### Shared Arguments\nThese argumentsd are shared by multiple functions.{args_desc}" if args_desc is not None else ''
     system_prompt += f"\n\n ### Function Descriptions:{functions_desc}" if functions_desc is not None else ''
@@ -132,6 +130,13 @@ def get_system_prompt(plan_list=None, lineup_list=None, args_desc=None, function
     return system_prompt if len(context) != len(system_prompt) else None
 
 if __name__=='__main__':
+    import json
+    # sys_prompt = get_system_prompt()
+    # print(f'{sys_prompt = }')
 
-    sys_prompt = get_system_prompt()
-    print(f'{sys_prompt = }')
+    with open('source/function.json', 'r') as f:
+        FUNCTIONS = json.load(f)
+
+        func_desc = get_functions(FUNCTIONS)
+
+    print(func_desc)

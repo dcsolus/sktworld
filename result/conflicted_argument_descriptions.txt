@@ -1,0 +1,46 @@
+ [benefit]  ->  [availableAmountForDataOptionRefill]
+	benefits of the mobile plan
+	amount of data refill
+ [includedDataForSharingAndTethering]  ->  [includedData]
+	The amount of sharing and tethering data.
+	The amount of data. Generally GB units are used.
+ [includedDataForSharingAndTethering]  ->  [maximumAmountForSharing]
+	The amount of sharing and tethering data.
+	The maximum amount of data that can be shared with others
+ [includedDataForSharingAndTethering]  ->  [onboardingDevice, maximumAmountForSharing]
+	The amount of sharing and tethering data.
+	device for subscribing to the product
+	The maximum amount of data that can be shared with others
+ [includedData]  ->  [maximumAmountForSharing]
+	The amount of data. Generally GB units are used.
+	The maximum amount of data that can be shared with others
+ [lineup]  ->  [includedVoiceCall]
+	The name of the parent group to which the mobile plan belongs
+	The amount of voice calls provided by the plan
+ [lineup]  ->  [productName]
+	The name of the parent group to which the mobile plan belongs
+	name of mobile plan
+ [maximumAmountForSharing]  ->  [includedData]
+	The maximum amount of data that can be shared with others
+	The amount of data. Generally GB units are used.
+ [onboardingDevice]  ->  [specialCustomerOnboard]
+	device for subscribing to the product
+	Customer type segment (military, college student, etc.)
+ [onboardingTypeEligibility]  ->  [onboardingChannel, onboardingTypeEligibility]
+	Available subscription types
+	Channel to subscribe to the product
+ [onboardingTypeEligibility]  ->  [onboardingTypeEligibility, onboardingChannel]
+	Available subscription types
+	Channel to subscribe to the product
+ [optionData]  ->  [includedData, optionData]
+	data provided in addition to the basic data provided
+	The amount of data. Generally GB units are used.
+ [optionData]  ->  [includedData]
+	data provided in addition to the basic data provided
+	The amount of data. Generally GB units are used.
+ [plan]  ->  [keywords]
+	SKTelecom mobile plan you want to change.
+	ERROR: 'keywords' not found in the shared arguments
+ [plans]  ->  [keywords]
+	List of SKTelecom mobile plans.
+	ERROR: 'keywords' not found in the shared arguments

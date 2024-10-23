@@ -1,4 +1,7 @@
 import os
+import math
+import numpy as np
+import codecs
 import time
 import json
 import requests
@@ -6,7 +9,7 @@ import pickle
 from typing import Union, List, Dict, Set
 
 # Payload for the request
-def get_payload(system_prompt:str, user_prompt:str, temperature:float=0.0) -> dict:
+def get_payload(**kwargs) -> dict:
     return {
         "messages": [
             {
@@ -14,7 +17,7 @@ def get_payload(system_prompt:str, user_prompt:str, temperature:float=0.0) -> di
                 "content": [
                     {
                         "type": "text",
-                        "text": system_prompt
+                        "text": kwargs.get('system_prompt')
                     }
                 ]
             },
@@ -23,7 +26,7 @@ def get_payload(system_prompt:str, user_prompt:str, temperature:float=0.0) -> di
                 "content": [
                     {
                         "type": "text",
-                        "text": user_prompt
+                        "text": kwargs.get('user_prompt')
                     }
                 ]
             },
@@ -37,18 +40,22 @@ def get_payload(system_prompt:str, user_prompt:str, temperature:float=0.0) -> di
                 ]
             }
         ],
-        "temperature": temperature
+        "temperature": kwargs.get('temperature', 0.0),
+        "logprobs": True,
+        # "top_p" : kwargs.get('top_p'),
     }
 
-def send_request(system_prompt:str, user_prompt:str, **kwargs)->dict:
-    ENDPOINT = f"{os.getenv('AZURE_OPENAI_ENDPOINT')}openai/deployments/{os.getenv('AZURE_OPENAI_MODEL_NAME')}/chat/completions?api-version={os.getenv('AZURE_OPENAI_API_VERSION')}"
-    payload = get_payload(system_prompt, user_prompt)
+def send_request(**kwargs)->dict:
+
+    user_prompt = kwargs.get('user_prompt')
+    endpoint =  kwargs.get('endpoint')
+    payload = get_payload(**kwargs)
     headers = kwargs.get('headers')
 
     # Send request
     try:
         start = time.time()
-        response = requests.post(ENDPOINT, headers=headers, json=payload)
+        response = requests.post(endpoint, headers=headers, json=payload)
         time_lapse = time.time() - start
         response.raise_for_status()  # Will raise an HTTPError if the HTTP request returned an unsuccessful status code
     except requests.HTTPError as e:
@@ -74,7 +81,10 @@ def send_request(system_prompt:str, user_prompt:str, **kwargs)->dict:
                 content = content[7:-3].strip()  # Strip off the ```json and ```
 
             # Now load the cleaned content as JSON
-            result = json.loads(content)  # Load it as JSON
+            result = {}
+            result['content'] = json.loads(content)  # Load it as JSON
+
+            result['original_response'] = parsed_response
 
             # Inject time_lapse
             result['time_lapse'] = time_lapse
@@ -168,18 +178,15 @@ def send_request_with_retry(**kwargs):
         wait_seconds: int
         user_query: str
     """
-    system_prompt = kwargs.get('system_prompt')
-    headers = kwargs.get('headers')
     max_retries = kwargs.get('max_retries')
     wait_seconds = kwargs.get('wait_seconds')
-    user_query = kwargs.get('user_query')
     
     # Define the error message
     error_message = f'Reactivating the requests after waiting for {wait_seconds} seconds...'
     retries = 0
     while retries < max_retries:
         try:
-            return send_request(system_prompt=system_prompt, user_prompt=user_query, headers=headers)
+            return send_request(**kwargs)
         except SystemExit as e:
             retries += 1
             print(f"Attempt {retries} failed: {e}")
@@ -204,3 +211,40 @@ def send_request_with_retry(**kwargs):
             else:
                 print(f"Failed after {max_retries} attempts.")
                 raise  # Re-raise the exception after all retries are exhaustedi
+
+def get_aoai_endpoint_in4u()->str:
+    return f"{os.getenv('AZURE_OPENAI_ENDPOINT')}openai/deployments/{os.getenv('AZURE_OPENAI_MODEL_NAME')}/chat/completions?api-version={os.getenv('AZURE_OPENAI_API_VERSION')}"
+
+
+def parse_logprob(content)->dict:
+
+    def is_ascii(char)->bool:
+        return isinstance(char, str) and ord(char) < 128
+    
+    def get_none_ascii_key(keys:Union[List, Set])->list:
+        # return values
+        none_ascii_keys = [] 
+        
+        # decode key
+        for key in keys:
+            decoded_key = codecs.decode(key,'unicode_escape')
+            res = [is_ascii(char) for char in decoded_key]
+            if not all(res) and len(res) <= 2:
+                none_ascii_keys.append(key)
+        return none_ascii_keys
+    
+    threshold_index = [i for i, prob_dict in enumerate(content) if prob_dict['token']=='arguments'][0]
+    logprob = {prob_dict['token'].strip():prob_dict['logprob'] for i, prob_dict in enumerate(content) 
+                if i > threshold_index
+                and len(prob_dict['token'].strip().strip(r'":[]{}.,').replace('keywords', '')) > 0}
+
+    # remove none ascii keys 
+    keys = list(logprob.keys())
+    none_ascii_keys = get_none_ascii_key(keys)
+    for k in none_ascii_keys:
+        logprob.pop(k)
+
+    # convert log value to probabilities
+    probs = [math.exp(v) for v in logprob.values()]
+
+    return {'logprobs':logprob, 'avg_prob': np.mean(probs)}

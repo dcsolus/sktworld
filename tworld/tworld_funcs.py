@@ -2,10 +2,11 @@ import pandas as pd
 from datetime import date
 from tqdm import tqdm
 import json
+import os
+import requests
 from utils import send_request_with_retry, save_pickle, compare_dicts
 
-
-def run_and_evaluate(data:pd.DataFrame, **kwargs)->dict:
+def run_and_evaluate(data:pd.DataFrame, **kwargs)->requests:
     """
     kwargs:
         skip_rows: int, number of rows to skip while quering againt LLM
@@ -27,6 +28,7 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->dict:
     false_index_list = {}
     time_lapse = {}
     content_filtered = {}
+    original_response = {}
 
     # Iterate over the rows with progress bar
     pbar = tqdm(data.itertuples(), total=len(data))
@@ -48,7 +50,9 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->dict:
 
         # Measure the time while requesting
         try:
-            res = send_request_with_retry(**kwargs)
+            response = send_request_with_retry(**kwargs)
+            original_response[row_id] = response['original_response']
+            res = response['content']
         except SystemExit:
             continue  # Skip this row if retries failed
 
@@ -75,4 +79,4 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->dict:
                 print(f'error evaluating llm response: {is_identical}')
                 raise KeyError(e)
                 
-    return {'false_index_list':false_index_list, 'time_lapse': time_lapse, 'content_filter': content_filtered}
+    return {'false_index_list':false_index_list, 'time_lapse': time_lapse, 'content_filter': content_filtered, 'original_response': original_response} 

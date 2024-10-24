@@ -5,6 +5,9 @@ import json
 import os
 import requests
 from utils import send_request_with_retry, save_pickle, compare_dicts
+from set_logger import MyLogger
+
+mylogger = MyLogger()
 
 def run_and_evaluate(data:pd.DataFrame, **kwargs)->requests:
     """
@@ -57,14 +60,17 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->requests:
             continue  # Skip this row if retries failed
 
         # Record time lapse for each user query
-        time_lapse[row_id] = res['time_lapse']
-        save_pickle(time_lapse, time_lapse_file_name)
+        try:
+            time_lapse[row_id] = response['time_lapse']
+            save_pickle(time_lapse, time_lapse_file_name, 'result')
+        except KeyError as e:
+            raise Exception(e)
 
         if res.get('content_filter'):
             content_filtered[row_id] = {}
             content_filtered[row_id]['filtered'] =  [policy for policy, filter_result in res['innererror']['content_filter_result'].items() if filter_result['filtered']]
             content_filtered[row_id]['user_query'] = kwargs['user_query']
-            save_pickle(content_filtered, content_filter_file_name)
+            save_pickle(content_filtered, content_filter_file_name, 'result')
             continue
 
         # Compare response with true result
@@ -74,9 +80,9 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->requests:
                 false_index_list[row_id] = {}
                 false_index_list[row_id]['message'] = is_identical['message']
                 false_index_list[row_id]['user_query'] = kwargs['user_query']
-                save_pickle(false_index_list, false_index_file_name)
+                save_pickle(false_index_list, false_index_file_name, 'result')
             except KeyError as e:
-                print(f'error evaluating llm response: {is_identical}')
+                mylogger.error(f'error evaluating llm response: {is_identical}')
                 raise KeyError(e)
                 
     return {'false_index_list':false_index_list, 'time_lapse': time_lapse, 'content_filter': content_filtered, 'original_response': original_response} 

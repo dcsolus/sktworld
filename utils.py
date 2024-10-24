@@ -7,6 +7,10 @@ import json
 import requests
 import pickle
 from typing import Union, List, Dict, Set
+import pandas as pd
+from set_logger import MyLogger
+
+mylogger = MyLogger()
 
 # Payload for the request
 def get_payload(**kwargs) -> dict:
@@ -26,7 +30,7 @@ def get_payload(**kwargs) -> dict:
                 "content": [
                     {
                         "type": "text",
-                        "text": kwargs.get('user_prompt')
+                        "text": kwargs.get('user_query')
                     }
                 ]
             },
@@ -47,7 +51,7 @@ def get_payload(**kwargs) -> dict:
 
 def send_request(**kwargs)->dict:
 
-    user_prompt = kwargs.get('user_prompt')
+    user_query = kwargs.get('user_query')
     endpoint =  kwargs.get('endpoint')
     payload = get_payload(**kwargs)
     headers = kwargs.get('headers')
@@ -62,7 +66,7 @@ def send_request(**kwargs)->dict:
         if e.response.status_code == 400:
             # Handle 400 Bad Request error specifically
             error_detail = e.response.json() if e.response.content else "No additional error details"
-            print(f"400 Client Error: {user_prompt = }")  # Print the error details
+            print(f"400 Client Error: {user_query = }")  # Print the error details
             raise SystemExit(error_detail) 
         else:
             # Handle other HTTP errors
@@ -93,10 +97,10 @@ def send_request(**kwargs)->dict:
             raise ValueError("Unexpected response structure: 'choices' key not found or empty.")
             
     except ValueError as e:
-        print(f"ValueError: {e}. Response content: {parsed_response}")
+        mylogger.error(f"ValueError: {e}. Response content: {parsed_response}")
         raise SystemExit("Failed to parse the response as JSON.")
     except json.JSONDecodeError as e:
-        print(f"JSONDecodeError: {e}. Raw response: {response.text}")
+        mylogger.error(f"JSONDecodeError: {e}. Raw response: {response.text}")
         raise SystemExit("Failed to decode JSON response.")
     
 def compare_dicts(dict1, dict2, path="")->dict:
@@ -106,13 +110,13 @@ def compare_dicts(dict1, dict2, path="")->dict:
     # Check if both are dictionaries
     if not isinstance(dict1, dict) or not isinstance(dict2, dict):
         mismatch_info = f"Type mismatch at path '{path}': {type(dict1)} != {type(dict2)}"
-        print(mismatch_info)
+        mylogger.info(mismatch_info)
         return {'result': False, 'message':{'mismatch_info':mismatch_info, 'true_output': dict1, 'assistant_output': dict2}}
 
     # Compare the keys
     if dict1.keys() != dict2.keys():
         mismatch_info = f"Key mismatch at path '{path}': {dict1.keys()} != {dict2.keys()}"
-        print(mismatch_info)
+        mylogger.info(mismatch_info)
         return {'result': False, 'message':{'mismatch_info':mismatch_info, 'true_output': dict1, 'assistant_output': dict2}}
 
     # Compare the values for each key
@@ -131,8 +135,8 @@ def compare_dicts(dict1, dict2, path="")->dict:
             # Check if both are empty dictionaries or other empty types
             if isinstance(val1, dict) and isinstance(val2, dict) and not val1 and not val2:
                 continue  # Both are empty dictionaries, consider them equal
-            mismatch_info = f"Value mismatch at path '{new_path}': {val1} != {val2}. type({type(val1)} != {type(val2)}), len({len(val1)} != {len(val2)})"
-            print(mismatch_info)
+            mismatch_info = f"Value mismatch at path '{new_path}': {val1} != {val2}. type({type(val1)} != {type(val2)})"
+            mylogger.info(mismatch_info)
             return {'result': False, 'message':{'mismatch_info':mismatch_info, 'true_output': dict1, 'assistant_output': dict2}}
 
     return {'result':True, 'message':{}}
@@ -189,15 +193,15 @@ def send_request_with_retry(**kwargs):
             return send_request(**kwargs)
         except SystemExit as e:
             retries += 1
-            print(f"Attempt {retries} failed: {e}")
+            mylogger.info(f"Attempt {retries} failed: {e}, kwargs: {kwargs.keys()}")
             
             # Since e is a SystemExit with a dictionary structure, we can access it directly
-            error_details = e.args[0] if e.args else {}
+            error_details = e.args[0] if e.args else {'error': {'messages':None, 'code':None, 'innererror':None}}
 
             # Safely extract relevant keys from the error message
-            error_message = error_details.get('error', {}).get('message', '')
-            content_filter_code = error_details.get('error', {}).get('code', '')
-            inner_error = error_details.get('error', {}).get('innererror', {})
+            error_message = error_details.get('error').get('messages', '')
+            content_filter_code = error_details.get('error').get('code', '')
+            inner_error = error_details.get('error').get('innererror', {})
 
             if content_filter_code == 'content_filter':
                 return {
@@ -206,10 +210,10 @@ def send_request_with_retry(**kwargs):
                 }
 
             if retries < max_retries:
-                print(error_message)
+                mylogger.error(error_message)
                 time.sleep(wait_seconds)  # Wait before retrying
             else:
-                print(f"Failed after {max_retries} attempts.")
+                mylogger.error(f"Failed after {max_retries} attempts.")
                 raise  # Re-raise the exception after all retries are exhaustedi
 
 def get_aoai_endpoint_in4u()->str:
@@ -248,3 +252,60 @@ def parse_logprob(content)->dict:
     probs = [math.exp(v) for v in logprob.values()]
 
     return {'logprobs':logprob, 'avg_prob': np.mean(probs)}
+
+
+def logprob_main(df:pd.DataFrame, **kwargs):
+    """
+    Main function to process user query data and calculate log probabilities.
+
+    This function cleans up the column names in the provided DataFrame, prepares a request
+    to an external service(eg. Azure OpenAI), and retrieves log probabilities for each specified row of user
+    queries. The results are returned as a dictionary indexed by the row indices.
+
+    Parameters:
+    ----------
+    df : pd.DataFrame
+        A DataFrame containing user query data, with a column named 'Utterance_Sentence'
+        that holds the queries for which log probabilities are to be calculated.
+
+    **kwargs : keyword arguments
+        Additional parameters to be passed to the request, including:
+        - data: The cleaned DataFrame.
+        - system_prompt: A string that defines the system prompt for the request.
+        - endpoint: The API endpoint for the external service.
+        - temperature: A float controlling the randomness of the output (default is 0.0).
+        - headers: A dictionary of HTTP headers to be included in the request.
+
+    Returns:
+    -------
+    results : dict
+        A dictionary where the keys are the indices of the DataFrame rows and the values
+        are the calculated log probabilities for the corresponding user queries.
+
+    Example:
+    --------
+    results = logprob_main(user_query_data)
+    """
+
+    from tqdm import tqdm
+
+    # Clean up column names by replacing spaces with underscores
+    df.columns = [c.replace(' ', '_') for c in df.columns]
+
+    # define all the indices of the target rows, with which the iteration will be done
+    target_rows = kwargs.get('target_rows', tuple())
+
+    results = dict()
+    pbar = tqdm(df.itertuples(), total=len(df))
+    for row in pbar:
+        pbar.set_description(f'{row.Index = }')
+        if not str(row.Index) in target_rows:
+            continue
+        user_query = row.Utterance_Sentence
+        kwargs['user_query'] = user_query
+        response = send_request(**kwargs)
+        content = response['original_response']['choices'][0]['logprobs']['content']
+        logprob = parse_logprob(content)
+        results[str(row.Index)] = logprob
+    
+    return results

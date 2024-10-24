@@ -99,7 +99,7 @@ function_desc = """
     Example Questions: "Recommend a plan with FLO benefits", "Suggest a plan with Netflix benefits within the 5GX plans."
   - **Optional Arguments**:
       - `keywords` (object)
-24. **estimated_billing_charge_compare_to_current:
+24. **estimated_billing_charge_compare_to_current**:
   - Description: This function compares the estimated billing charges of the sought-after plan with the current plan and provides detailed information.
   - Use Cases:
     Inquiring about the estimated billing changes when switching to a specific plan with certain conditions.

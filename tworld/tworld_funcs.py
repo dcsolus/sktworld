@@ -20,6 +20,7 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->requests:
     skip_rows = kwargs.get('skip_rows', None)
     target_rows = kwargs.get('target_rows', None)
     today = kwargs.get('today', date.today())
+    run_eval = kwargs.get('run_evaluate', True)
 
     assert not (skip_rows is not None and target_rows is not None), "skip_rows and target_rows are mutually exclusive"
 
@@ -49,8 +50,6 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->requests:
         # update kwargs
         kwargs['user_query'] = row.Utterance_Sentence.strip()        
         
-        true_result = json.loads(row.LLM_output)
-
         # Measure the time while requesting
         try:
             response = send_request_with_retry(**kwargs)
@@ -74,15 +73,17 @@ def run_and_evaluate(data:pd.DataFrame, **kwargs)->requests:
             continue
 
         # Compare response with true result
-        is_identical = compare_dicts(true_result, res)
-        if not is_identical['result']:
-            try:
-                false_index_list[row_id] = {}
-                false_index_list[row_id]['message'] = is_identical['message']
-                false_index_list[row_id]['user_query'] = kwargs['user_query']
-                save_pickle(false_index_list, false_index_file_name, 'result')
-            except KeyError as e:
-                mylogger.error(f'error evaluating llm response: {is_identical}')
-                raise KeyError(e)
+        if run_eval:
+            true_result = json.loads(row.LLM_output)
+            is_identical = compare_dicts(true_result, res)
+            if not is_identical['result']:
+                try:
+                    false_index_list[row_id] = {}
+                    false_index_list[row_id]['message'] = is_identical['message']
+                    false_index_list[row_id]['user_query'] = kwargs['user_query']
+                    save_pickle(false_index_list, false_index_file_name, 'result')
+                except KeyError as e:
+                    mylogger.error(f'error evaluating llm response: {is_identical}')
+                    raise KeyError(e)
                 
     return {'false_index_list':false_index_list, 'time_lapse': time_lapse, 'content_filter': content_filtered, 'original_response': original_response} 

@@ -309,3 +309,16 @@ def logprob_main(df:pd.DataFrame, **kwargs):
         results[str(row.Index)] = logprob
     
     return results
+
+def decode_json(row_str) -> str:
+    """
+    Decode the 'mismatch_info' string from the row dictionary.
+    
+    If the path starts with 'name', return a list of key-value pairs.
+    Otherwise, return a list of arguments based on the path structure.
+    """
+    row_str = row_str['mismatch_info'].split('at path')[1].strip().replace("'","")
+    if row_str.startswith('name'):
+        return [i.strip() for i in row_str.split(':')]
+    else:
+        return row_str.split(':')

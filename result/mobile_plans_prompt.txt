@@ -1,0 +1,146 @@
+### Below is a list of mobile lineups grouped by their respective similar words or phrases :
+1. **similarities:** 언택트, 티다, 온라인
+  - **lineups:** LTE 다이렉트플랜, 0청년 다이렉트플랜, 다이렉트 넷플릭스 요금제, 0청년 다이렉트 넷플릭스 요금제, 다이렉트플랜
+
+2. **similarities:** 20대, MZ
+  - **lineups:** 0청년 다이렉트플랜, 0청년 넷플릭스 요금제, 0청년, 0청년 다이렉트 넷플릭스 요금제
+
+3. **similarities:** 5GX
+  - **lineups:** 5G 일반요금제
+
+4. **similarities:** 팅, 10대, 중등, 미성년, 고등
+  - **lineups:** 5G 청소년 요금제, 주말엔 팅, 0틴플랜
+
+5. **similarities:** 실버, 어르신
+  - **lineups:** T플랜 시니어, 5G 시니어 요금제
+
+6. **similarities:** 어린이, 초등
+  - **lineups:** 5G ZEM 플랜, ZEM플랜
+
+7. **similarities:** 복지
+  - **lineups:** 행복누리, 소리누리, 손누리
+
+8. **similarities:** 청각장애
+  - **lineups:** 행복누리, 손누리
+
+9. **similarities:** LTE
+  - **lineups:** T플랜
+
+10. **similarities:** 군인
+  - **lineups:** 0히어로
+
+11. **similarities:** 청년
+  - **lineups:** 0플랜
+
+12. **similarities:** 맞춤, DIY
+  - **lineups:** 뉴 T끼리 맞춤형
+
+13. **similarities:** 시각장애
+  - **lineups:** 소리누리
+
+### Below is a list of mobile plans grouped by their respective similar words or phrases. 
+1. **similarities:** OTT
+  - **plans:** 0 청년 89(넷플릭스), 0 청년 99(넷플릭스), 5GX 플래티넘(넷플릭스), 5GX 프라임(넷플릭스), 다이렉트5G 62(넷플릭스), 5GX 프라임플러스(넷플릭스), 0 청년 다이렉트 69(넷플릭스), 다이렉트5G 69(넷플릭스), 다이렉트5G 76(넷플릭스), 0 청년 109(넷플릭스), 5GX 프리미엄(넷플릭스), 0 청년 다이렉트 62(넷플릭스)
+
+2. **similarities:** 89
+  - **plans:** 5GX 프라임(넷플릭스), 5GX 프라임
+
+3. **similarities:** 99
+  - **plans:** 5GX 프라임플러스, 5GX 프라임플러스(넷플릭스)
+
+4. **similarities:** 109
+  - **plans:** 5GX 프리미엄(넷플릭스), 5GX 프리미엄
+
+5. **similarities:** 125
+  - **plans:** 5GX 플래티넘(넷플릭스), 5GX 플래티넘
+
+6. **similarities:** 무제한
+  - **plans:** 0 청년 109, 5GX 프리미엄, 0 청년 다이렉트 69, 0 청년 다이렉트 62, 0 청년 89, 다이렉트5G 62, 0 청년 99, 다이렉트5G 76, 다이렉트5G 69
+
+7. **similarities:** 유튜브
+  - **plans:** 다이렉트5G 76, 5GX 프리미엄, 0 청년 109
+
+8. **similarities:** 31
+  - **plans:** 다이렉트5G 31
+
+9. **similarities:** 27
+  - **plans:** 다이렉트5G 27
+
+10. **similarities:** T우주 할인
+  - **plans:** 0 청년 89, 5GX 프라임, 다이렉트5G 62
+
+11. **similarities:** T우주 무료
+  - **plans:** 다이렉트5G 69, 5GX 프라임플러스, 5GX 플래티넘, 0 청년 99
+
+12. **similarities:** 34
+  - **plans:** 다이렉트5G 34
+
+13. **similarities:** 42
+  - **plans:** 다이렉트5G 42
+
+14. **similarities:** 충전
+  - **plans:** 컴팩트플러스, 베이직플러스 30GB업, 베이직플러스 50GB업, 컴팩트, 0 청년 59 15GB업, 0 청년 59, 베이직플러스, 0 청년 49, 0 청년 59 36GB업, 0 청년 59 60GB업, 베이직, 베이직플러스 75GB업, 베이직플러스 13GB업, 0 청년 59 100GB업
+
+15. **similarities:** 62
+  - **plans:** 0 청년 59 15GB업, 베이직플러스 13GB업
+
+16. **similarities:** 64
+  - **plans:** 베이직플러스 30GB업, 0 청년 59 36GB업
+
+17. **similarities:** 66
+  - **plans:** 베이직플러스 50GB업, 0 청년 59 60GB업
+
+18. **similarities:** 68
+  - **plans:** 베이직플러스 75GB업, 0 청년 59 100GB업
+
+19. **similarities:** 49
+  - **plans:** 베이직, 0 청년 49, 컴팩트플러스
+
+20. **similarities:** 59
+  - **plans:** 0 청년 59, 베이직플러스
+
+21. **similarities:** 79
+  - **plans:** 5GX 레귤러플러스
+
+22. **similarities:** 69
+  - **plans:** 5GX 레귤러
+
+23. **similarities:** 39
+  - **plans:** 컴팩트
+
+24. **similarities:** 55
+  - **plans:** 슬림
+
+25. **similarities:** 30
+  - **plans:** 0 청년 다이렉트 30
+
+26. **similarities:** 65세
+  - **plans:** 5G 시니어 C형
+
+27. **similarities:** 70세
+  - **plans:** 5G 시니어 B형
+
+28. **similarities:** 80세
+  - **plans:** 5G 시니어 A형
+
+29. **similarities:** 이심요금제
+  - **plans:** 마이투넘버
+
+30. **similarities:** LTE100
+  - **plans:** T플랜 맥스
+
+31. **similarities:** 웨이브 플로
+  - **plans:** 0플랜 라지, T플랜 맥스
+
+32. **similarities:** LTE79
+  - **plans:** T플랜 스페셜
+
+33. **similarities:** LTE69
+  - **plans:** T플랜 에센스
+
+34. **similarities:** LTE50
+  - **plans:** T플랜 안심4G
+
+35. **similarities:** LTE43
+  - **plans:** T플랜 안심2.5G
+

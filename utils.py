@@ -322,3 +322,20 @@ def decode_json(row_str) -> str:
         return [i.strip() for i in row_str.split(':')]
     else:
         return row_str.split(':')
+
+def merge_keys_with_same_values(input_dict):
+    # Create a new dictionary to store merged results
+    merged_dict = {}
+    
+    # Invert the dictionary to map tuple representations of values to lists of keys
+    value_to_keys = {}
+    for key, value in input_dict.items():
+        value_tuple = tuple(sorted(value))  # Convert list to tuple to use as a dictionary key
+        value_to_keys.setdefault(value_tuple, []).append(key)
+    
+    # Merge keys for each unique value
+    for value_tuple, keys in value_to_keys.items():
+        merged_key = ', '.join(keys)
+        merged_dict[merged_key] = list(value_tuple)  # Convert tuple back to list
+    
+    return merged_dict 
